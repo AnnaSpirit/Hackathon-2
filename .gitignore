@@ -1,6 +1,7 @@
 # === 📦 Dépendances Node.js ===
 # === 📦 Node.js dependencies ===
 node_modules/
+backend/node_modules copy/
 
 
 # === 🔐 Fichiers sensibles comme les clés API ===

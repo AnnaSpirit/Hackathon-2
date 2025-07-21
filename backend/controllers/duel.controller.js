@@ -1,11 +1,28 @@
-// backend/controllers/duel.controller.js
+const pool = require('../db/db');
 
-// Fonction de test pour vérifier que le contrôleur est bien appelé
-const getDuelHome = (req, res) => {
-    res.send("⚔️ Welcome to Playlist Duel backend!");
+// Fonction pour créer un duel
+const createDuel = async (req, res) => {
+    const { theme, player1_id, player2_id } = req.body;
+
+    console.log("POST data received:", req.body);
+
+    try {
+        const query = `
+            INSERT INTO duels (theme, player1_id, player2_id)
+            VALUES ($1, $2, $3)
+            RETURNING *;
+        `;
+        const values = [theme, player1_id, player2_id];
+        const result = await pool.query(query, values);
+
+        res.status(201).json(result.rows[0]);
+    } catch (error) {
+        console.error("🛑 SQL Error:", error); // <-- Ce log est essentiel
+        res.status(500).json({ error: "Internal Server Error 🧨" });
+    }
 };
 
-// Export de la fonction pour pouvoir l'utiliser dans les routes
+// On exporte la fonction à l’ancienne
 module.exports = {
-    getDuelHome
+    createDuel,
 };
